@@ -1,0 +1,17 @@
+FROM ubuntu:14.04
+
+WORKDIR /root
+
+RUN apt-get update
+RUN apt-get upgrade -yq
+
+RUN apt-get install curl wget -yq
+RUN wget https://www.ciphermail.com/downloads/djigzo-release-2.9.0-0/djigzo-web_2.9.0-0_all.deb
+RUN wget https://www.ciphermail.com/downloads/djigzo-release-2.9.0-0/djigzo_2.9.0-0_all.deb
+
+RUN dpkg -i djigzo_2.9.0-0_all.deb
+RUN dpkg -i djigzo-web_2.9.0-0_all.deb
+
+RUN apt-get install -f
+
+CMD /bin/bash
