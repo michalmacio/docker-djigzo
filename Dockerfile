@@ -26,14 +26,14 @@ WORKDIR /var/lib/postgresql/9.3/main
 RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.3/main/pg_hba.conf
 RUN echo "listen_addresses='*'" >> /etc/postgresql/9.3/main/postgresql.conf
 
-RUN /etc/init.d/postgresql start && psql --command "CREATE USER docker WITH SUPERUSER PASSWORD 'docker';" && createdb -O docker docker
+RUN /etc/init.d/postgresql start 
 
-RUN psql --command "CREATE USER djigzo NOCREATEUSER NOCREATEDB ENCRYPTED PASSWORD 'md5b720bc9de4ca53d53a4059882a0868b9';"
-RUN createdb --owner djigzo djigzo
+RUN psql -U postgres --command "CREATE USER djigzo NOCREATEUSER NOCREATEDB ENCRYPTED PASSWORD 'md5b720bc9de4ca53d53a4059882a0868b9';"
+RUN createdb -U postgres --owner djigzo djigzo
 
 RUN cd /usr/local/djigzo && sudo -u djigzo ant
 
-RUN sudo -u djigzo djigzo psql djigzo < /usr/local/djigzo/conf/djigzo.sql
+RUN psql -U postgres djigzo < /usr/local/djigzo/conf/djigzo.sql
 RUN bash -c 'echo "DJIGZO_HOME=/usr/local/djigzo" >> /etc/default/djigzo
 RUN ln -s /usr/local/djigzo/scripts/djigzo /etc/init.d/
 
