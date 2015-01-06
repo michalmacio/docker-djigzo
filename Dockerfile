@@ -3,7 +3,7 @@ FROM ubuntu:14.04
 
 RUN apt-get update
 RUN apt-get upgrade -yq
-RUN apt-get install postgresql postfix openjdk-7-jre openjdk-7-jre-headless tzdata-java ant ant-optional mktemp wget libsasl2-modules symlinks sudo -yq
+RUN apt-get install postgresql postfix openjdk-7-jre openjdk-7-jre-headless tzdata-java ant ant-optional mktemp wget libsasl2-modules symlinks sudo tomcat6 -yq
 RUN wget https://www.ciphermail.com/downloads/djigzo-release-2.9.0-0/djigzo-web_2.9.0-0_all.deb
 RUN wget https://www.ciphermail.com/downloads/djigzo-release-2.9.0-0/djigzo_2.9.0-0_all.deb
 
@@ -36,6 +36,16 @@ RUN /etc/init.d/postgresql start &&\
 
 RUN bash -c 'echo "DJIGZO_HOME=/usr/local/djigzo"' >> /etc/default/djigzo
 RUN ln -s /usr/local/djigzo/scripts/djigzo /etc/init.d/
+
+RUN echo "JAVA_OPTS=\"\$JAVA_OPTS -Djigzo-web.home=/user/local/djigzo-web\"" >> /etc/default/tomcat6
+RUN echo "TOMCAT6_SECURITY=no" >> /etc/default/tomcat6
+RUN chown tomcat6:djigzo /usr/local/djingzo-web/ssl/sslCertificate.p12
+
+RUN cp /usr/local/djigzo-web/conf/tomcat/server-T6.xml /etc/tomcat6/server.xml
+RUN sed 's#/share/djigzo-web/#/local/djigzo-web# /etc/tomcat6/server.xml --in-place
+
+RUN echo "<Context docBase=\"/usr/local/djigzo-web/djigzo.war\" unpackWAR=\"false\"/>" > /etc/tomcat6/Catalina/localhost/djigzo.xml
+RUN echo "<Context docBase=\"/usr/local/djigzo-web/djigzo-portal.war\" unpackWAR=\"false\"/>" > /etc/tomcat6/Catalina/localhost/web.xml
 
 RUN /etc/init.d/postgresql stop
 
