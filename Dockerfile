@@ -16,7 +16,7 @@ RUN usermod -a -G adm djigzo
 RUN mkdir /usr/local/djigzo-web
 RUN chown djigzo:djigzo /usr/local/djigzo-web
 
-WORKDIR /root
+WORKDIR /tmp
 
 RUN wget https://www.ciphermail.com/downloads/djigzo-release-2.9.0-0/djigzo_2.9.0-0.tar.gz
 RUN wget https://www.ciphermail.com/downloads/djigzo-release-2.9.0-0/djigzo-web_2.9.0-0.tar.gz
