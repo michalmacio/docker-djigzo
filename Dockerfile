@@ -39,7 +39,7 @@ RUN ln -s /usr/local/djigzo/scripts/djigzo /etc/init.d/
 
 RUN echo "JAVA_OPTS=\"\$JAVA_OPTS -Djigzo-web.home=/user/local/djigzo-web\"" >> /etc/default/tomcat6
 RUN echo "TOMCAT6_SECURITY=no" >> /etc/default/tomcat6
-RUN chown tomcat6:djigzo /usr/local/djingzo-web/ssl/sslCertificate.p12
+RUN chown tomcat6:djigzo /usr/local/djigzo-web/ssl/sslCertificate.p12
 
 RUN cp /usr/local/djigzo-web/conf/tomcat/server-T6.xml /etc/tomcat6/server.xml
 RUN sed 's#/share/djigzo-web/#/local/djigzo-web# /etc/tomcat6/server.xml --in-place
