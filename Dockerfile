@@ -21,13 +21,13 @@ WORKDIR /tmp
 RUN wget https://www.ciphermail.com/downloads/djigzo-release-2.9.0-0/djigzo_2.9.0-0.tar.gz
 RUN wget https://www.ciphermail.com/downloads/djigzo-release-2.9.0-0/djigzo-web_2.9.0-0.tar.gz
 
-RUN sudo -H -u djigzo tar zxvf djigzo_2.9.0-0.tar.gz --directory /usr/local/djigzo
-RUN sudo -H -u djigzo tar zxvf djigzo-web_2.9.0-0.tar.gz --directory /usr/local/djigzo-web
+RUN sudo -u djigzo tar zxvf djigzo_2.9.0-0.tar.gz --directory /usr/local/djigzo
+RUN sudo -u djigzo tar zxvf djigzo-web_2.9.0-0.tar.gz --directory /usr/local/djigzo-web
 
 WORKDIR /var/lib/postgresql/9.3/main
 
-RUN echo "CREATE USER djigzo NOCREATEUSER NOCREATEDB ENCRYPTED PASSWORD 'md5b720bc9de4ca53d53a4059882a0868b9';" | sudo -u -H postgres psql
-RUN sudo -H -u postgres createdb --owner djigzo djigzo
+RUN echo "CREATE USER djigzo NOCREATEUSER NOCREATEDB ENCRYPTED PASSWORD 'md5b720bc9de4ca53d53a4059882a0868b9';" | sudo -u postgres psql
+RUN sudo -u postgres createdb --owner djigzo djigzo
 
 RUN cd /usr/local/djigzo && sudo -u djigzo ant
 
