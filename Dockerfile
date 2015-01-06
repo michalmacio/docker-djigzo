@@ -26,7 +26,7 @@ RUN sudo -u djigzo tar zxvf djigzo-web_2.9.0-0.tar.gz --directory /usr/local/dji
 
 WORKDIR /var/lib/postgresql/9.3/main
 
-RUN echo "CREATE USER djigzo NOCREATEUSER NOCREATEDB ENCRYPTED PASSWORD 'md5b720bc9de4ca53d53a4059882a0868b9';" | psql
+RUN echo "CREATE USER djigzo NOCREATEUSER NOCREATEDB ENCRYPTED PASSWORD 'md5b720bc9de4ca53d53a4059882a0868b9';" | sudo -u postgres psql
 RUN sudo -u postgres createdb --owner djigzo djigzo
 
 RUN cd /usr/local/djigzo && sudo -u djigzo ant
