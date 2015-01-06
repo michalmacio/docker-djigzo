@@ -42,7 +42,7 @@ RUN echo "TOMCAT6_SECURITY=no" >> /etc/default/tomcat6
 RUN chown tomcat6:djigzo /usr/local/djigzo-web/ssl/sslCertificate.p12
 
 RUN cp /usr/local/djigzo-web/conf/tomcat/server-T6.xml /etc/tomcat6/server.xml
-RUN sed 's#/share/djigzo-web/#/local/djigzo-web# /etc/tomcat6/server.xml --in-place
+RUN sed 's#/share/djigzo-web/#/local/djigzo-web#' /etc/tomcat6/server.xml --in-place
 
 RUN echo "<Context docBase=\"/usr/local/djigzo-web/djigzo.war\" unpackWAR=\"false\"/>" > /etc/tomcat6/Catalina/localhost/djigzo.xml
 RUN echo "<Context docBase=\"/usr/local/djigzo-web/djigzo-portal.war\" unpackWAR=\"false\"/>" > /etc/tomcat6/Catalina/localhost/web.xml
