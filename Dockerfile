@@ -48,6 +48,7 @@ RUN echo "<Context docBase=\"/usr/local/djigzo-web/djigzo.war\" unpackWAR=\"fals
 RUN echo "<Context docBase=\"/usr/local/djigzo-web/djigzo-portal.war\" unpackWAR=\"false\"/>" > /etc/tomcat6/Catalina/localhost/web.xml
 
 RUN /etc/init.d/postgresql stop
+RUN chmod -R +x /usr/local/djigzo/scripts/*
 
 ADD init.sh /root/init.sh
 RUN chmod +x /root/init.sh
