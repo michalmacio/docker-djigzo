@@ -49,4 +49,7 @@ RUN echo "<Context docBase=\"/usr/local/djigzo-web/djigzo-portal.war\" unpackWAR
 
 RUN /etc/init.d/postgresql stop
 
-CMD /bin/bash
+ADD init.sh /root/init.sh
+RUN chmod +x /root/init.sh
+
+CMD /root/init.sh
