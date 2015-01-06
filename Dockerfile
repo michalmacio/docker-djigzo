@@ -52,4 +52,6 @@ RUN /etc/init.d/postgresql stop
 ADD init.sh /root/init.sh
 RUN chmod +x /root/init.sh
 
+EXPOSE 8443
+
 CMD /root/init.sh
