@@ -34,7 +34,7 @@ RUN /etc/init.d/postgresql start &&\
 	sudo -u postgres createdb --owner djigzo djigzo &&\
 	sudo -u postgres psql djigzo < /usr/local/djigzo/conf/djigzo.sql
 
-RUN bash -c 'echo "DJIGZO_HOME=/usr/local/djigzo" >> /etc/default/djigzo
+RUN bash -c 'echo "DJIGZO_HOME=/usr/local/djigzo"' >> /etc/default/djigzo
 RUN ln -s /usr/local/djigzo/scripts/djigzo /etc/init.d/
 
 RUN /etc/init.d/postgresql stop
