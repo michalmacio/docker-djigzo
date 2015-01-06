@@ -32,7 +32,7 @@ RUN cd /usr/local/djigzo && sudo -u djigzo ant
 RUN /etc/init.d/postgresql start &&\
 	sudo -u postgres psql --command "CREATE USER djigzo NOCREATEUSER NOCREATEDB ENCRYPTED PASSWORD 'md5b720bc9de4ca53d53a4059882a0868b9';" &&\
 	sudo -u postgres createdb --owner djigzo djigzo &&\
-	sudo -u postgres psql djigzo < /usr/local/djigzo/conf/djigzo.sql
+	sudo -u djigzo psql djigzo < /usr/local/djigzo/conf/djigzo.sql
 
 RUN bash -c 'echo "DJIGZO_HOME=/usr/local/djigzo"' >> /etc/default/djigzo
 RUN ln -s /usr/local/djigzo/scripts/djigzo /etc/init.d/
