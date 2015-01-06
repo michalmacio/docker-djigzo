@@ -54,5 +54,6 @@ ADD init.sh /root/init.sh
 RUN chmod +x /root/init.sh
 
 EXPOSE 8443
+VOLUME ["/var/lib/postgresql"]
 
 CMD /root/init.sh
