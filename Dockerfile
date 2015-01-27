@@ -55,7 +55,7 @@ WORKDIR /usr/local/djigzo/resources/certificates
 RUN wget https://www.ciphermail.com/downloads/roots.p7b
 RUN wget https://www.ciphermail.com/downloads/intermediates.p7b
 
-RUN chown -R djigzo:djigzo /usr/local/djigzo/resource/certificates
+RUN chown -R djigzo:djigzo ./
 
 ADD init.sh /root/init.sh
 RUN chmod +x /root/init.sh
