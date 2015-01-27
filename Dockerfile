@@ -1,5 +1,6 @@
 FROM ubuntu:14.04
 
+ENV HOME=/root
 
 RUN apt-get update
 RUN apt-get upgrade -yq
@@ -26,7 +27,6 @@ WORKDIR /var/lib/postgresql/9.3/main
 RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.3/main/pg_hba.conf
 RUN echo "listen_addresses='*'" >> /etc/postgresql/9.3/main/postgresql.conf
 
-
 RUN cd /usr/local/djigzo && sudo -u djigzo ant
 
 RUN /etc/init.d/postgresql start &&\
@@ -50,10 +50,17 @@ RUN echo "<Context docBase=\"/usr/local/djigzo-web/djigzo-portal.war\" unpackWAR
 RUN /etc/init.d/postgresql stop
 RUN chmod -R +x /usr/local/djigzo/scripts/*
 
+WORKDIR /usr/local/djigzo/resources/certificates
+
+RUN wget https://www.ciphermail.com/downloads/roots.p7b
+RUN wget https://www.ciphermail.com/downloads/intermediates.p7b
+
 ADD init.sh /root/init.sh
 RUN chmod +x /root/init.sh
 
 EXPOSE 8443
 VOLUME ["/var/lib/postgresql"]
+
+WORKDIR /root
 
 CMD /root/init.sh
