@@ -1,6 +1,6 @@
 FROM ubuntu:14.04
 
-ENV HOME=/root
+ENV HOME /root
 
 RUN apt-get update
 RUN apt-get upgrade -yq
