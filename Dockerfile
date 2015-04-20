@@ -5,7 +5,7 @@ ENV DJIGZO_VERSION 2.10.0-3
 
 RUN apt-get update
 RUN apt-get upgrade -yq
-RUN apt-get install postgresql postfix openjdk-7-jre openjdk-7-jre-headless tzdata-java ant ant-optional mktemp wget libsasl2-modules symlinks sudo tomcat6 -yq
+RUN apt-get install postgresql postfix openjdk-7-jre openjdk-7-jre-headless tzdata-java ant ant-optional mktemp wget libsasl2-modules symlinks sudo tomcat7 -yq
 
 RUN adduser --system --group --home /usr/local/djigzo --disabled-password --shell /bin/false djigzo
 RUN usermod -a -G adm djigzo
@@ -40,11 +40,11 @@ RUN echo "JAVA_OPTS=\"\$JAVA_OPTS -Djigzo-web.home=/user/local/djigzo-web\"" >> 
 RUN echo "TOMCAT6_SECURITY=no" >> /etc/default/tomcat6
 RUN chown tomcat6:djigzo /usr/local/djigzo-web/ssl/sslCertificate.p12
 
-RUN cp /usr/local/djigzo-web/conf/tomcat/server-T6.xml /etc/tomcat6/server.xml
-RUN sed 's#/share/djigzo-web/#/local/djigzo-web/#' /etc/tomcat6/server.xml --in-place
+RUN cp /usr/local/djigzo-web/conf/tomcat/server.xml /etc/tomcat7/server.xml
+RUN sed 's#/share/djigzo-web/#/local/djigzo-web/#' /etc/tomcat7/server.xml --in-place
 
-RUN echo "<Context docBase=\"/usr/local/djigzo-web/djigzo.war\" unpackWAR=\"false\"/>" > /etc/tomcat6/Catalina/localhost/djigzo.xml
-RUN echo "<Context docBase=\"/usr/local/djigzo-web/djigzo-portal.war\" unpackWAR=\"false\"/>" > /etc/tomcat6/Catalina/localhost/web.xml
+RUN echo "<Context docBase=\"/usr/local/djigzo-web/djigzo.war\" unpackWAR=\"false\"/>" > /etc/tomcat7/Catalina/localhost/djigzo.xml
+RUN echo "<Context docBase=\"/usr/local/djigzo-web/djigzo-portal.war\" unpackWAR=\"false\"/>" > /etc/tomcat7/Catalina/localhost/web.xml
 
 RUN /etc/init.d/postgresql stop
 RUN chmod -R +x /usr/local/djigzo/scripts/*
