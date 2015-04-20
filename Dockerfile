@@ -1,12 +1,11 @@
 FROM ubuntu-debootstrap:14.04
 
 ENV HOME /root
+ENV DJIGZO_VERSION 2.10.0-3
 
 RUN apt-get update
 RUN apt-get upgrade -yq
 RUN apt-get install postgresql postfix openjdk-7-jre openjdk-7-jre-headless tzdata-java ant ant-optional mktemp wget libsasl2-modules symlinks sudo tomcat6 -yq
-RUN wget https://www.ciphermail.com/downloads/djigzo-release-2.9.0-0/djigzo-web_2.9.0-0_all.deb
-RUN wget https://www.ciphermail.com/downloads/djigzo-release-2.9.0-0/djigzo_2.9.0-0_all.deb
 
 RUN adduser --system --group --home /usr/local/djigzo --disabled-password --shell /bin/false djigzo
 RUN usermod -a -G adm djigzo
@@ -16,11 +15,11 @@ RUN chown djigzo:djigzo /usr/local/djigzo-web
 
 WORKDIR /tmp
 
-RUN wget https://www.ciphermail.com/downloads/djigzo-release-2.9.0-0/djigzo_2.9.0-0.tar.gz
-RUN wget https://www.ciphermail.com/downloads/djigzo-release-2.9.0-0/djigzo-web_2.9.0-0.tar.gz
+RUN wget https://www.ciphermail.com/downloads/djigzo-release-${DJIGZO_VERSION}/djigzo_${DJIGZO_VERSION}.tar.gz
+RUN wget https://www.ciphermail.com/downloads/djigzo-release-${DJIGZO_VERSION}/djigzo-web_${DJIGZO_VERSION}.tar.gz
 
-RUN sudo -u djigzo tar zxvf djigzo_2.9.0-0.tar.gz --directory /usr/local/djigzo
-RUN sudo -u djigzo tar zxvf djigzo-web_2.9.0-0.tar.gz --directory /usr/local/djigzo-web
+RUN sudo -u djigzo tar zxvf djigzo_${DJIGZO_VERSION}.tar.gz --directory /usr/local/djigzo
+RUN sudo -u djigzo tar zxvf djigzo-web_${DJIGZO_VERSION}.tar.gz --directory /usr/local/djigzo-web
 
 WORKDIR /var/lib/postgresql/9.3/main
 
