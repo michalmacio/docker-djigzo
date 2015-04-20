@@ -36,9 +36,9 @@ RUN /etc/init.d/postgresql start &&\
 RUN bash -c 'echo "DJIGZO_HOME=/usr/local/djigzo"' >> /etc/default/djigzo
 RUN ln -s /usr/local/djigzo/scripts/djigzo /etc/init.d/
 
-RUN echo "JAVA_OPTS=\"\$JAVA_OPTS -Djigzo-web.home=/user/local/djigzo-web\"" >> /etc/default/tomcat6
-RUN echo "TOMCAT6_SECURITY=no" >> /etc/default/tomcat6
-RUN chown tomcat6:djigzo /usr/local/djigzo-web/ssl/sslCertificate.p12
+RUN echo "JAVA_OPTS=\"\$JAVA_OPTS -Djigzo-web.home=/user/local/djigzo-web\"" >> /etc/default/tomcat7
+RUN echo "TOMCAT7_SECURITY=no" >> /etc/default/tomcat7
+RUN chown tomcat7:djigzo /usr/local/djigzo-web/ssl/sslCertificate.p12
 
 RUN cp /usr/local/djigzo-web/conf/tomcat/server.xml /etc/tomcat7/server.xml
 RUN sed 's#/share/djigzo-web/#/local/djigzo-web/#' /etc/tomcat7/server.xml --in-place
