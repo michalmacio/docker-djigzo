@@ -1,16 +1,13 @@
-FROM ubuntu-debootstrap:14.04
+FROM combro2k/debian-debootstrap:8
 
 ENV HOME /root
 ENV DJIGZO_VERSION 2.10.0-3
 
-RUN apt-get update
-RUN apt-get upgrade -yq
-RUN apt-get install postgresql postfix openjdk-7-jre openjdk-7-jre-headless tzdata-java ant ant-optional mktemp wget libsasl2-modules symlinks sudo tomcat7 -yq
-
-RUN adduser --system --group --home /usr/local/djigzo --disabled-password --shell /bin/false djigzo
-RUN usermod -a -G adm djigzo
-
-RUN mkdir /usr/local/djigzo-web
+RUN apt-get update && \
+    apt-get install postgresql postfix openjdk-7-jre openjdk-7-jre-headless tzdata-java ant ant-optional mktemp wget libsasl2-modules symlinks sudo tomcat7 -yq && \
+    adduser --system --group --home /usr/local/djigzo --disabled-password --shell /bin/false djigzo && \
+    usermod -a -G adm djigzo && \
+    mkdir /usr/local/djigzo-web
 RUN chown djigzo:djigzo /usr/local/djigzo-web
 
 WORKDIR /tmp
