@@ -46,10 +46,12 @@ RUN wget https://www.ciphermail.com/downloads/roots.p7b
 RUN wget https://www.ciphermail.com/downloads/intermediates.p7b
 
 RUN chown -R djigzo:djigzo ./
+RUN mkdir /run/tomcat8 && chown -R tomcat8:tomcat8 /run/tomcat8 && sed -i 's/\/var\/run\/\$NAME.pid/\/var\/run\/tomcat8\/\$NAME.pid/' /etc/init.d/tomcat8
 
 ADD init.sh /root/init.sh
 RUN chmod +x /root/init.sh
 
+EXPOSE 25
 EXPOSE 8443
 VOLUME ["/var/lib/postgresql"]
 
