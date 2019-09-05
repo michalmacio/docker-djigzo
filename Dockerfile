@@ -4,8 +4,9 @@ ENV HOME /root
 ENV DJIGZO_VERSION 4.3.0-1
 RUN for i in $(seq 1 8); do mkdir -p "/usr/share/man/man${i}"; done
 
-RUN apt-get update && \
-    apt-get install postgresql postfix openjdk-8-jre openjdk-8-jre-headless ant ant-optional mktemp libsasl2-modules symlinks wget symlinks sudo tomcat8 -yq && \
+RUN echo "deb http://deb.debian.org/debian oldstable main" >> /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install postgresql postfix openjdk-8-jre openjdk-8-jre-headless ant ant-optional libsasl2-modules symlinks wget symlinks sudo tomcat8 coreutils -yq && \
     adduser --system --group --home /usr/local/djigzo --disabled-password --shell /bin/false djigzo && \
     usermod -a -G adm djigzo && \
     mkdir /usr/local/djigzo-web
@@ -46,7 +47,7 @@ RUN wget https://www.ciphermail.com/downloads/roots.p7b
 RUN wget https://www.ciphermail.com/downloads/intermediates.p7b
 
 RUN chown -R djigzo:djigzo ./
-RUN mkdir /run/tomcat8 && chown -R tomcat8:tomcat8 /run/tomcat8 && sed -i 's/\/var\/run\/\$NAME.pid/\/var\/run\/tomcat8\/\$NAME.pid/' /etc/init.d/tomcat8
+# RUN mkdir /run/tomcat8 && chown -R tomcat8:tomcat8 /run/tomcat8 && sed -i 's/\/var\/run\/\$NAME.pid/\/var\/run\/tomcat8\/\$NAME.pid/' /etc/init.d/tomcat8
 
 ADD init.sh /root/init.sh
 RUN chmod +x /root/init.sh
