@@ -47,6 +47,13 @@ RUN sudo bash -c 'echo "JAVA_OPTS=\"\$JAVA_OPTS -Ddjigzo-web.home=/usr/share/dji
     sudo sed -i 's/unpackWARs="false"/unpackWARs="true"/' /etc/tomcat8/server.xml && \
     sudo bash -c 'echo "<Context docBase=\"/usr/share/djigzo-web/djigzo.war\" />" > /etc/tomcat8/Catalina/localhost/ciphermail.xml' && \
     sudo bash -c 'echo "<Context docBase=\"/usr/share/djigzo-web/djigzo-portal.war\" />" > /etc/tomcat8/Catalina/localhost/web.xml'
+    
+    
+# download sqlplus client and JDBC drivers
+
+#configure Ciphermail for Oracle 
+
+
 
 # download keystores
 WORKDIR /usr/local/djigzo/resources/certificates
