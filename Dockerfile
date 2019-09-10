@@ -66,7 +66,7 @@ add orai18n.jar   /usr/share/djigzo/lib/lib.d
 
 
 #configure Ciphermail for Oracle 
-sudo vi /usr/share/djigzo/wrapper/wrapper-additional-parameters.conf
+sudo sed  /usr/share/djigzo/wrapper/wrapper-additional-parameters.conf
 
 
 # download keystores
