@@ -50,9 +50,23 @@ RUN sudo bash -c 'echo "JAVA_OPTS=\"\$JAVA_OPTS -Ddjigzo-web.home=/usr/share/dji
     
     
 # download sqlplus client and JDBC drivers
+  
+add ojdbc6.jar /usr/share/tomcat8/lib
+add ojdbc7.jar /usr/share/tomcat8/lib
+add orai18n.jar   /usr/share/tomcat8/lib
+
+add ojdbc6.jar /usr/share/java
+add ojdbc7.jar /usr/share/java
+add orai18n.jar   /usr/share/java
+
+add ojdbc6.jar /usr/share/djigzo/lib/lib.d
+add ojdbc7.jar /usr/share/djigzo/lib/lib.d
+add orai18n.jar   /usr/share/djigzo/lib/lib.d
+
+
 
 #configure Ciphermail for Oracle 
-
+sudo vi /usr/share/djigzo/wrapper/wrapper-additional-parameters.conf
 
 
 # download keystores
