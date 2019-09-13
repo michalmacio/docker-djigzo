@@ -1,11 +1,5 @@
 FROM debian:stable-slim
 
-ARG DB_NAME
-ARG DB_HOSTNAME
-ARG DB_PORT
-ARG DB_USER_NAME
-ARG DB_USER_PASSWORD
-
 ENV HOME /root
 ENV DJIGZO_VERSION 4.3.0-1
 RUN for i in $(seq 1 8); do mkdir -p "/usr/share/man/man${i}"; done
@@ -13,23 +7,31 @@ RUN for i in $(seq 1 8); do mkdir -p "/usr/share/man/man${i}"; done
 RUN echo "deb http://deb.debian.org/debian oldstable main" >> /etc/apt/sources.list && \
     apt-get update && \
     apt-get install postgresql postfix openjdk-8-jre openjdk-8-jre-headless ant ant-optional libsasl2-modules symlinks wget symlinks sudo tomcat8 coreutils -yq && \
+    echo "LC_ALL=en_US.UTF-8" >> /etc/environment && \
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+    echo "LANG=en_US.UTF-8" > /etc/locale.conf && \
+    locale-gen en_US.UTF-8 && \
     adduser --system --group --home /usr/local/djigzo --disabled-password --shell /bin/false djigzo && \
     usermod -a -G adm djigzo && \
-    mkdir /usr/local/djigzo-web
-RUN chown djigzo:djigzo /usr/local/djigzo-web
+    mkdir /usr/local/djigzo-web && \
+    chown djigzo:djigzo /usr/local/djigzo-web && \
+    apt-get autoremove -y && \
+    apt-get clean
 
+# download and install djigzo packages
 WORKDIR /tmp
-
 RUN wget https://www.ciphermail.com/downloads/djigzo-release-${DJIGZO_VERSION}/djigzo_${DJIGZO_VERSION}_all.deb && \
     wget https://www.ciphermail.com/downloads/djigzo-release-${DJIGZO_VERSION}/djigzo-web_${DJIGZO_VERSION}_all.deb && \
-    wget https://www.ciphermail.com/downloads/djigzo-release-${DJIGZO_VERSION}/djigzo-postgres_${DJIGZO_VERSION}_all.deb
-
-# install djigzo packages
-RUN sudo dpkg -i djigzo_${DJIGZO_VERSION}_all.deb && \
+    wget https://www.ciphermail.com/downloads/djigzo-release-${DJIGZO_VERSION}/djigzo-postgres_${DJIGZO_VERSION}_all.deb && \
+    sudo dpkg -i djigzo_${DJIGZO_VERSION}_all.deb && \
+    rm djigzo_${DJIGZO_VERSION}_all.deb && \
     sudo service postgresql start && \
     sudo dpkg -i djigzo-postgres_${DJIGZO_VERSION}_all.deb && \
+    rm djigzo-postgres_${DJIGZO_VERSION}_all.deb && \
     sudo service djigzo restart && \
-    sudo dpkg -i djigzo-web_${DJIGZO_VERSION}_all.deb
+    sudo dpkg -i djigzo-web_${DJIGZO_VERSION}_all.deb && \
+    rm djigzo-web_${DJIGZO_VERSION}_all.deb && \
+    apt-get clean
 
 # configure postfix
 RUN sudo cp /etc/postfix/djigzo-main.cf /etc/postfix/main.cf && \
@@ -46,28 +48,26 @@ RUN sudo bash -c 'echo "JAVA_OPTS=\"\$JAVA_OPTS -Ddjigzo-web.home=/usr/share/dji
     sudo bash -c 'echo "<Context docBase=\"/usr/share/djigzo-web/djigzo.war\" />" > /etc/tomcat8/Catalina/localhost/ciphermail.xml' && \
     sudo bash -c 'echo "<Context docBase=\"/usr/share/djigzo-web/djigzo-portal.war\" />" > /etc/tomcat8/Catalina/localhost/web.xml'
 
+# add Oracle JDBC files
 ADD ojdbc6.jar /usr/share/tomcat8/lib/ojdbc6.jar
-ADD ojdbc6.jar /usr/share/djigzo/lib/lib.d/ojdbc6.jar	
+ADD ojdbc6.jar /usr/share/djigzo/lib/lib.d/ojdbc6.jar
 
-#configure Ciphermail for Oracle 
+# configure Ciphermail for Oracle
 RUN sudo bash -c 'echo "-Dciphermail.hibernate.database.type=oracle" >> /usr/share/djigzo/wrapper/wrapper-additional-parameters.conf'
-RUN sudo bash -c 'echo "JAVA_OPTS=\"\$JAVA_OPTS -Dciphermail.backup.enabled=false\"" >> /etc/default/tomcat8'
-
+RUN sudo bash -c 'echo "JAVA_OPTS=\"\$JAVA_OPTS -Dciphermail.backup.enabled=false\"" >> /etc/default/tomcat8'	
 	
 # download keystores
 WORKDIR /usr/local/djigzo/resources/certificates
+RUN wget https://www.ciphermail.com/downloads/roots.p7b && \
+    wget https://www.ciphermail.com/downloads/intermediates.p7b && \
+    chown -R djigzo:djigzo ./
 
-RUN wget https://www.ciphermail.com/downloads/roots.p7b
-RUN wget https://www.ciphermail.com/downloads/intermediates.p7b
-
-RUN chown -R djigzo:djigzo ./
 # RUN mkdir /run/tomcat8 && chown -R tomcat8:tomcat8 /run/tomcat8 && sed -i 's/\/var\/run\/\$NAME.pid/\/var\/run\/tomcat8\/\$NAME.pid/' /etc/init.d/tomcat8
 
 ADD init.sh /root/init.sh
 RUN chmod +x /root/init.sh
 
 EXPOSE 25
-EXPOSE $DB_PORT
 EXPOSE 8443
 VOLUME ["/var/lib/postgresql"]
 
