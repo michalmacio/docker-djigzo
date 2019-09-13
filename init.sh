@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # configure database connection
-sudo 'echo "<property name=\"hibernate.connection.url\">jdbc:oracle:thin:@tdgdadelta123:1521:DB123</property><property name=\"hibernate.connection.username\">djigzo</property><property name=\"hibernate.connection.password\">djigzo</property>"' > /usr/share/djigzo/conf/database/hibernate.oracle.connection.xml
+sudo bash -c 'echo "<property name=\"hibernate.connection.url\">jdbc:oracle:thin:@tdgdadelta123:1521:DB123</property><property name=\"hibernate.connection.username\">djigzo</property><property name=\"hibernate.connection.password\">djigzo</property>" > /usr/share/djigzo/conf/database/hibernate.oracle.connection.xml'
 
 /etc/init.d/postgresql start
 /etc/init.d/djigzo start
