@@ -50,7 +50,16 @@ RUN sudo bash -c 'echo "JAVA_OPTS=\"\$JAVA_OPTS -Ddjigzo-web.home=/usr/share/dji
 
 # add Oracle JDBC files
 ADD ojdbc6.jar /usr/share/tomcat8/lib/ojdbc6.jar
+ADD ojdbc7.jar /usr/share/tomcat8/lib/ojdbc7.jar
+
+ADD ojdbc6.jar /usr/share/djigzo/lib/ojdbc6.jar
+ADD ojdbc7.jar /usr/share/djigzo/lib/ojdbc7.jar
+
 ADD ojdbc6.jar /usr/share/djigzo/lib/lib.d/ojdbc6.jar
+ADD ojdbc7.jar /usr/share/djigzo/lib/lib.d/ojdbc7.jar
+
+ADD ojdbc6.jar /usr/share/java/ojdbc6.jar
+ADD ojdbc7.jar /usr/share/java/ojdbc7.jar
 
 # configure Ciphermail for Oracle
 RUN sudo bash -c 'echo "-Dciphermail.hibernate.database.type=oracle" >> /usr/share/djigzo/wrapper/wrapper-additional-parameters.conf'
